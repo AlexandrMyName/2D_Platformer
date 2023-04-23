@@ -1,28 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
-
+using Zenject;
 
 namespace PlatformerMVC
 {
-
-
     public class Main : MonoBehaviour
     {
-        [SerializeField] LevelObjectView _playerView;
-        [SerializeField] private AnimationConfig _config;
-        private SpriteAnimatorController _playerAnimator;
+        
+        [Inject(Id = "Player_Configs")]
+        private PlayerController _playerController;
 
-        private void Awake()
-        {
-            _config = Resources.Load<AnimationConfig>("SpriteAnimatorCfg");
-            _playerAnimator = new SpriteAnimatorController(_config);
-            _playerAnimator.StartAnimation(_playerView._sprite, AnimationState.Idle, true, 10f);
+        private void Awake(){
+
+            _playerController?.Awake();
         }
-        private void Update()
-        {
-            _playerAnimator?.Update();
+        private void Update(){
+
+           _playerController?.Update();
         }
     }
-
 }

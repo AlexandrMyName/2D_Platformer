@@ -13,7 +13,6 @@ namespace PlatformerMVC
         Jump = 2
     }
 
-
     [CreateAssetMenu(fileName = "SpriteAnimator_Config",menuName = "CONFIGS/Animation")]
     public class AnimationConfig : ScriptableObject
     {

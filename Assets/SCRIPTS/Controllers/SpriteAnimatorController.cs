@@ -44,10 +44,8 @@ namespace PlatformerMVC
         private Dictionary<SpriteRenderer, Animation> _activeAnimations = new Dictionary<SpriteRenderer, Animation>();
 
 
-        public SpriteAnimatorController(AnimationConfig config)
-        {
-            _config = config;
-        }
+        public SpriteAnimatorController(AnimationConfig config) => _config = config;
+        
 
         public void StartAnimation(SpriteRenderer spriteRenderer, AnimationState track, bool loop, float speed)
         {
@@ -66,23 +64,19 @@ namespace PlatformerMVC
             }
             else
             {
-                _activeAnimations.Add(spriteRenderer, new Animation()
-                {
+                _activeAnimations.Add(spriteRenderer, new Animation(){
                     track = track,
                     loop = loop,
                     speed = speed,
                     sprites = _config.sequences.Find(sequence => sequence.track == track).sprites
-
-
                 });
             }
         }
-        public void StopAnimation(SpriteRenderer spriteRenderer)
-        {
+        public void StopAnimation(SpriteRenderer spriteRenderer){
+
             if (_activeAnimations.ContainsKey(spriteRenderer))
-            {
                 _activeAnimations.Remove(spriteRenderer);
-            }
+            
         }
         public void Update()
         {
@@ -96,11 +90,6 @@ namespace PlatformerMVC
                 }
             }
         }
-        public void Dispose()
-        {
-            _activeAnimations.Clear();
-        }
-
-       
+        public void Dispose() => _activeAnimations.Clear();
     }
 }
