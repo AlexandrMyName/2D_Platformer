@@ -13,16 +13,20 @@ namespace PlatformerMVC
 
         private LevelObjectView _playerView;
 
+        private Rigidbody2D _rb;
+        private ContactPooler _poolContacts;
+
+
         #region player_Movemant_LocalCnf
 
         private float _xInput;
-        private float _groundLevel = 0.5f;
-        private float _g = -9.8f;
+
 
         private float _animationSpeed = 25f;
-        private float _moveSpeed = 3f;
-        private float _jumpForce = 6f;
-        private float _yVelocity;
+        private float _moveSpeed = 170f;
+        private float _jumpForce = 7f;
+        private float _yVelocity = 0;
+        private float _xVelocity = 0;
         private float _jumpTrashhold = 0.1f;
         private float _moveTrashhold = 0.3f;
 
@@ -34,52 +38,56 @@ namespace PlatformerMVC
 
         #endregion
 
-        public PlayerController(LevelObjectView playerView) =>_playerView = playerView;
-
-        public void Awake(){
-
-            _playerAnimator.StartAnimation(_playerView._sprite, AnimationState.Idle, true, 15f);
+        public PlayerController(LevelObjectView playerView, ContactPooler _contactPooler)
+        {
+            _playerView = playerView;
+            _rb = _playerView._rb;
+            _poolContacts = _contactPooler;
         }
+
         public void Update(){
 
             _playerAnimator?.Update();
-
+            _poolContacts?.Update();
             _xInput = Input.GetAxis("Horizontal");
             _isJump = Input.GetAxis("Vertical") > 0;
             _isMoving = Mathf.Abs(_xInput) > _moveTrashhold;
+            _yVelocity = _rb.velocity.y;
+           
 
             if (_isMoving) MoveTowards();
- 
-            if (IsGround()){
-
+            else 
+            {
+                _xVelocity = 0;
+                _rb.velocity = new Vector2(_xVelocity,_rb.velocity.y);
+            }
+            if (_poolContacts.IsGround){
                 _playerAnimator.StartAnimation(_playerView._sprite, _isMoving ? AnimationState.Run : AnimationState.Idle, true, _animationSpeed);
 
-
-                if ((_isJump || Input.GetKeyDown(KeyCode.Space)) && _yVelocity <= 0 ) //START Jump
-                    _yVelocity = _jumpForce;
-                
-                else if (_yVelocity < 0){ //END Jump
-
-                    _yVelocity = 0;
-                    _playerView._transform.position = new Vector3(_playerView._transform.position.x, _groundLevel, _playerView._transform.position.z);
-                }
+                if ((_isJump || Input.GetKeyDown(KeyCode.Space)) && _yVelocity == 0) //START Jump
+                    _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
             }
             else
             {
                 if (Mathf.Abs(_yVelocity) > _jumpTrashhold)
                     _playerAnimator.StartAnimation(_playerView._sprite, AnimationState.Jump, false, _animationSpeed);
-                
-                _yVelocity += _g * Time.deltaTime;
-                _playerView._transform.position += Vector3.up * (_yVelocity * Time.deltaTime);
+
+                if ((_poolContacts.IsLeftContact || _poolContacts.IsRightContact) && _isMoving)
+                {
+                    _xVelocity = 0;
+                    _rb.velocity = new Vector2(_xVelocity, _rb.velocity.y);
+                }
             }
         }
 
 
         private void MoveTowards()
         {
-            _playerView._transform.position += Vector3.right * (Time.deltaTime * _moveSpeed * (_xInput < 0 ? -1 : 1));
+
+            _xVelocity = Time.fixedDeltaTime * _moveSpeed * (_xInput < 0 ? -1 : 1);
+            _rb.velocity = new Vector2(_xVelocity,_yVelocity);
             _playerView._transform.localScale = _xInput < 0 ? _leftScale : _rightScale;
         }
-        private bool IsGround() => _playerView._transform.position.y <= _groundLevel && _yVelocity <= 0;
+      
     }
 }

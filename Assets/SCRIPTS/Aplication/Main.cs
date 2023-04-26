@@ -12,13 +12,13 @@ namespace PlatformerMVC
         [Inject(Id = "Player_Configs")]
         private PlayerController _playerController;
 
-        private void Awake(){
+        [Inject(Id = "Player_Configs")]
+        private CannonController _cannonController;
 
-            _playerController?.Awake();
-        }
         private void Update(){
 
            _playerController?.Update();
+            _cannonController?.Update();
         }
     }
 }
