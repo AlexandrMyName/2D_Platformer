@@ -8,6 +8,6 @@ namespace PlatformerMVC
     {
         public Transform _muzzleTransform;
         public Transform _emmiterTransform;
-        public List<LevelObjectView> _bullets;
+        public List<BulletView> _bullets;
     }
 }

@@ -12,6 +12,7 @@ namespace PlatformerMVC
         private float _treshold = 0.2f;
 
         public bool IsGround { get; private set; }
+        public bool IsUpContact { get; private set; }
         public bool IsLeftContact { get; private set; }
         public bool IsRightContact { get; private set; }
 
@@ -30,6 +31,7 @@ namespace PlatformerMVC
             for(int i = 0; i < counter; i++)
             {
                 if (_points[i].normal.y > _treshold) IsGround = true;
+                if (_points[i].normal.y < -_treshold) IsUpContact = true;
                 if (_points[i].normal.x > _treshold) IsRightContact = true;
                 if (_points[i].normal.x < -_treshold) IsLeftContact = true;
 

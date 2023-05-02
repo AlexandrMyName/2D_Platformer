@@ -15,10 +15,21 @@ namespace PlatformerMVC
         [Inject(Id = "Player_Configs")]
         private CannonController _cannonController;
 
+        [Inject(Id = "CameraId")]
+        private CameraController _cameraController;
+       
+
+
+      
         private void Update(){
 
            _playerController?.Update();
             _cannonController?.Update();
+          
+        }
+        private void LateUpdate()
+        {
+            _cameraController.LateUpdate();
         }
     }
 }

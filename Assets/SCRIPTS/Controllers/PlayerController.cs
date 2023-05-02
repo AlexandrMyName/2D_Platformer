@@ -6,8 +6,8 @@ namespace PlatformerMVC
 {
     public class PlayerController
     {
-        [Inject(Id = "Player_Configs")]
-        private AnimationConfig _animationPlayerConfig;
+
+
         [Inject(Id = "Player_Configs")]
         private SpriteAnimatorController _playerAnimator;
 
@@ -38,13 +38,26 @@ namespace PlatformerMVC
 
         #endregion
 
-        public PlayerController(LevelObjectView playerView, ContactPooler _contactPooler)
+
+        private float health = 100f;
+        public PlayerController(InteractiveObjView playerView, ContactPooler _contactPooler)
         {
             _playerView = playerView;
             _rb = _playerView._rb;
             _poolContacts = _contactPooler;
+            playerView.takeDamage += TakeDamage;
         }
+        private void TakeDamage(BulletView view)
+        {
+            health -= view.DamagePoint;
 
+            if (health <= 0)
+            {
+                health = 0;
+                
+                _playerView._sprite.enabled = false;
+            }
+        }
         public void Update(){
 
             _playerAnimator?.Update();
@@ -53,9 +66,9 @@ namespace PlatformerMVC
             _isJump = Input.GetAxis("Vertical") > 0;
             _isMoving = Mathf.Abs(_xInput) > _moveTrashhold;
             _yVelocity = _rb.velocity.y;
-           
 
-            if (_isMoving) MoveTowards();
+          
+            if (_isMoving && !_poolContacts.IsLeftContact && !_poolContacts.IsRightContact) MoveTowards();
             else 
             {
                 _xVelocity = 0;
@@ -64,19 +77,19 @@ namespace PlatformerMVC
             if (_poolContacts.IsGround){
                 _playerAnimator.StartAnimation(_playerView._sprite, _isMoving ? AnimationState.Run : AnimationState.Idle, true, _animationSpeed);
 
-                if ((_isJump || Input.GetKeyDown(KeyCode.Space)) && _yVelocity == 0) //START Jump
+                if ((_isJump || Input.GetKeyDown(KeyCode.Space))) //START Jump
+                {
+                    _rb.velocity = new Vector2(_xVelocity, 0);
                     _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+                }
             }
             else
             {
                 if (Mathf.Abs(_yVelocity) > _jumpTrashhold)
                     _playerAnimator.StartAnimation(_playerView._sprite, AnimationState.Jump, false, _animationSpeed);
 
-                if ((_poolContacts.IsLeftContact || _poolContacts.IsRightContact) && _isMoving)
-                {
-                    _xVelocity = 0;
-                    _rb.velocity = new Vector2(_xVelocity, _rb.velocity.y);
-                }
+               
+                
             }
         }
 
