@@ -15,7 +15,10 @@ namespace PlatformerMVC
 
         private void Start()
         {
-           ShowAdd();
+
+#if !UNITY_EDITOR
+            ShowAdd();
+#endif
         }
 
         public void ShowAdd(){
@@ -23,10 +26,8 @@ namespace PlatformerMVC
             Time.timeScale = 0.0f;
             ShowAdv();
         }
-        public void AdvClosed()
-        {
-            Time.timeScale = 1.0f;
-        }
+        public void AdvClosed() => Time.timeScale = 1.0f;
+        
         
 
     }
