@@ -47,6 +47,7 @@ namespace PlatformerMVC
             _poolContacts = _contactPooler;
             playerView.takeDamage += TakeDamage;
         }
+      
         private void TakeDamage(BulletView view)
         {
             health -= view.DamagePoint;
@@ -71,6 +72,10 @@ namespace PlatformerMVC
             if (_isMoving && !_poolContacts.IsLeftContact && !_poolContacts.IsRightContact) MoveTowards();
             else 
             {
+                if((_poolContacts.IsLeftContact || _poolContacts.IsRightContact) && _poolContacts.IsGround)
+                    _xVelocity = _xVelocity = Time.fixedDeltaTime * _moveSpeed * (_xInput < 0 ? -1 : 1);
+                else
+
                 _xVelocity = 0;
                 _rb.velocity = new Vector2(_xVelocity,_rb.velocity.y);
             }

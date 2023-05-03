@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace PlatformerMVC
@@ -17,6 +18,9 @@ namespace PlatformerMVC
 
         [Inject(Id = "CameraId")]
         private CameraController _cameraController;
+
+        [Inject(Id = "LoseId")]
+        private LoseController _loseController;
        
 
 
@@ -30,6 +34,12 @@ namespace PlatformerMVC
         private void LateUpdate()
         {
             _cameraController.LateUpdate();
+        }
+
+
+        public void ReloadLevel(int level)
+        {
+            SceneManager.LoadScene("Level_" + level.ToString());
         }
     }
 }

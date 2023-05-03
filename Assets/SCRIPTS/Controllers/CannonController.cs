@@ -25,6 +25,7 @@ namespace PlatformerMVC
 
         public void Update()
         {
+            if(Vector3.Distance(_muzzle.position,_target.position) <= 16)
             _emmitor.Update();
 
             _direction = _target.position - _muzzle.position;

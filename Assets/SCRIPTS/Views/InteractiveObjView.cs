@@ -2,17 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace PlatformerMVC
 {
     public class InteractiveObjView : LevelObjectView
     {
         public Action<BulletView> takeDamage;
+        public Action death;
 
-        //public void OnTriggerEnter2D(Collider2D collision)
-        //{
-        //    if (collision.tag == "Bullet") takeDamage?.Invoke(collision.GetComponent<BulletView>());
-        //}
+
+
+
+
+        public void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.tag == "OutWorld")
+            {
+                death?.Invoke();
+                Debug.Log("Invoke");
+
+            }
+        }
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.tag == "Bullet")
@@ -33,6 +44,12 @@ namespace PlatformerMVC
             {
                 collision.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 
+                
+            }
+            if (collision.gameObject.tag == "TrollPlatformDeath")
+            {
+                collision.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                GetComponent<Collider2D>().isTrigger = true;
 
             }
         }

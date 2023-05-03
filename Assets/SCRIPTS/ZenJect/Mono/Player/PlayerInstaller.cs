@@ -9,6 +9,7 @@ namespace PlatformerMVC
         [SerializeField] InteractiveObjView _playerView;
         [SerializeField] private CannonView _cannonView;
         [SerializeField] private CameraView _cameraView;
+        [SerializeField] private LoseView _loseView;
         public override void InstallBindings()
         {
             var _confAnimathionPlayer = Resources.Load<AnimationConfig>("SpriteAnimatorCfg");
@@ -18,6 +19,7 @@ namespace PlatformerMVC
             Container.Bind<PlayerController>().WithId("Player_Configs").FromNew().AsCached().WithArguments(_playerView, new ContactPooler(_playerView._collider2D));
             Container.Bind<CannonController>().WithId("Player_Configs").FromNew().AsCached().WithArguments(_cannonView,_playerView._transform);
             Container.Bind<CameraController>().WithId("CameraId").FromNew().AsCached().WithArguments(_cameraView);
+            Container.Bind<LoseController>().WithId("LoseId").FromNew().AsCached().WithArguments(_playerView,_loseView);
 
 
         }
