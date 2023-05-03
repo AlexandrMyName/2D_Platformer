@@ -39,6 +39,9 @@ namespace PlatformerMVC
         #endregion
 
 
+        [Inject]
+        private MobileController _mobile;
+
         private float health = 100f;
         public PlayerController(InteractiveObjView playerView, ContactPooler _contactPooler)
         {
@@ -67,9 +70,9 @@ namespace PlatformerMVC
             _isJump = Input.GetAxis("Vertical") > 0;
             _isMoving = Mathf.Abs(_xInput) > _moveTrashhold;
             _yVelocity = _rb.velocity.y;
-
+            
           
-            if (_isMoving && !_poolContacts.IsLeftContact && !_poolContacts.IsRightContact) MoveTowards();
+            if ((_isMoving || _mobile.IsLeftInput || _mobile.IsRightInput) && (!_poolContacts.IsLeftContact && !_poolContacts.IsRightContact)) MoveTowards();
             else 
             {
                 if((_poolContacts.IsLeftContact || _poolContacts.IsRightContact) && _poolContacts.IsGround)
@@ -80,9 +83,14 @@ namespace PlatformerMVC
                 _rb.velocity = new Vector2(_xVelocity,_rb.velocity.y);
             }
             if (_poolContacts.IsGround){
-                _playerAnimator.StartAnimation(_playerView._sprite, _isMoving ? AnimationState.Run : AnimationState.Idle, true, _animationSpeed);
 
-                if ((_isJump || Input.GetKeyDown(KeyCode.Space))) //START Jump
+                if (_mobile.IsLeftInput || _mobile.IsRightInput){
+
+                        _playerAnimator.StartAnimation(_playerView._sprite, AnimationState.Run , true, _animationSpeed);
+                }
+                else _playerAnimator.StartAnimation(_playerView._sprite, _isMoving ? AnimationState.Run : AnimationState.Idle, true, _animationSpeed);
+
+                if ((_isJump || Input.GetKeyDown(KeyCode.Space) || _mobile.IsUpInput)) //START Jump
                 {
                     _rb.velocity = new Vector2(_xVelocity, 0);
                     _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
@@ -102,9 +110,30 @@ namespace PlatformerMVC
         private void MoveTowards()
         {
 
-            _xVelocity = Time.fixedDeltaTime * _moveSpeed * (_xInput < 0 ? -1 : 1);
-            _rb.velocity = new Vector2(_xVelocity,_yVelocity);
-            _playerView._transform.localScale = _xInput < 0 ? _leftScale : _rightScale;
+            if (_mobile.IsLeftInput || _mobile.IsRightInput)
+            {
+                if (_mobile.IsRightInput)
+                {
+                    _playerView._transform.localScale = _rightScale;
+                    _xVelocity = Time.fixedDeltaTime * _moveSpeed * 1;
+                }
+                else
+                {
+                    _playerView._transform.localScale = _leftScale;
+                    _xVelocity = Time.fixedDeltaTime * _moveSpeed * -1;
+                }
+
+                _rb.velocity = new Vector2(_xVelocity, _yVelocity);
+
+                return;
+
+            }
+            else
+            {
+                _xVelocity = Time.fixedDeltaTime * _moveSpeed * (_xInput < 0 ? -1 : 1);
+                _rb.velocity = new Vector2(_xVelocity, _yVelocity);
+                _playerView._transform.localScale = _xInput < 0 ? _leftScale : _rightScale;
+            }
         }
       
     }

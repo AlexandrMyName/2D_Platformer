@@ -10,6 +10,9 @@ namespace PlatformerMVC
         [SerializeField] private CannonView _cannonView;
         [SerializeField] private CameraView _cameraView;
         [SerializeField] private LoseView _loseView;
+        [SerializeField] private MobileController _mobileController;
+
+        [SerializeField] private YandexSDK SDK;
         public override void InstallBindings()
         {
             var _confAnimathionPlayer = Resources.Load<AnimationConfig>("SpriteAnimatorCfg");
@@ -21,7 +24,8 @@ namespace PlatformerMVC
             Container.Bind<CameraController>().WithId("CameraId").FromNew().AsCached().WithArguments(_cameraView);
             Container.Bind<LoseController>().WithId("LoseId").FromNew().AsCached().WithArguments(_playerView,_loseView);
 
-
+            Container.Bind<YandexSDK>().FromInstance(SDK).AsCached();
+            Container.Bind<MobileController>().FromInstance(_mobileController).AsCached();
         }
     }
 }
