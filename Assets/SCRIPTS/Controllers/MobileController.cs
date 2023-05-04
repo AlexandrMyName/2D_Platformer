@@ -16,37 +16,13 @@ namespace PlatformerMVC
         public bool IsUpInput { get { return isUpInput; } }
 
 
-        public void IsLeft()
-        {
-            isLeftInput = true;
+        public void IsLeft() => isLeftInput = true;
           
-        }
-        public void IsRight()
-        {
-            isRightInput = true;
-          
-        }
-        public void IsUp()
-        {
-            isUpInput = true;
-            
-        }
-        //
-        public void NoLeft()
-        {
-            isLeftInput = false;
-
-        }
-        public void NoRight()
-        {
-            isRightInput = false;
-
-        }
-        public void NoUp()
-        {
-            isUpInput = false;
-
-        }
-      
+        
+        public void IsRight() => isRightInput = true;
+        public void IsUp() => isUpInput = true;
+        public void NoLeft() => isLeftInput = false;
+        public void NoRight() => isRightInput = false;
+        public void NoUp() => isUpInput = false;
     }
 }

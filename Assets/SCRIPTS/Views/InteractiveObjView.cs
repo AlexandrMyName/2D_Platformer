@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace PlatformerMVC
 {
@@ -10,9 +11,8 @@ namespace PlatformerMVC
     {
         public Action<BulletView> takeDamage;
         public Action death;
-
-
-
+        public Action nextLevel;
+        
 
 
         public void OnTriggerEnter2D(Collider2D collision)
@@ -20,6 +20,12 @@ namespace PlatformerMVC
             if (collision.tag == "OutWorld")
             {
                 death?.Invoke();
+                Debug.Log("Invoke");
+
+            }
+            if (collision.tag == "NextLevel")
+            {
+                nextLevel?.Invoke();
                 Debug.Log("Invoke");
 
             }

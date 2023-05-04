@@ -6,7 +6,7 @@ using UnityEngine;
 namespace PlatformerMVC {
     public class LoseView : MonoBehaviour
     {
-        public GameObject _losePanel;
-        public TextMeshProUGUI _deathCount;
+        public GameObject _panel;
+        public TextMeshProUGUI _count;
     }
 }

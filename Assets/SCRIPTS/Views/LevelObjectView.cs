@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlatformerMVC
 {
@@ -10,5 +11,7 @@ namespace PlatformerMVC
         public Transform _transform;
         public Rigidbody2D _rb;
         public Collider2D _collider2D;
+        public Slider _healthBar;
+
     }
 }

@@ -49,16 +49,19 @@ namespace PlatformerMVC
             _rb = _playerView._rb;
             _poolContacts = _contactPooler;
             playerView.takeDamage += TakeDamage;
+            _playerView._healthBar.maxValue = 100f;
         }
       
         private void TakeDamage(BulletView view)
         {
             health -= view.DamagePoint;
+          
+            _playerView._healthBar.value = health;
 
             if (health <= 0)
             {
                 health = 0;
-                
+                _playerView._healthBar.gameObject.SetActive(false);
                 _playerView._sprite.enabled = false;
             }
         }
@@ -115,11 +118,13 @@ namespace PlatformerMVC
                 if (_mobile.IsRightInput)
                 {
                     _playerView._transform.localScale = _rightScale;
+                   
                     _xVelocity = Time.fixedDeltaTime * _moveSpeed * 1;
                 }
                 else
                 {
                     _playerView._transform.localScale = _leftScale;
+                    
                     _xVelocity = Time.fixedDeltaTime * _moveSpeed * -1;
                 }
 

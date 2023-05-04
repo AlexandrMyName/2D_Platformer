@@ -11,7 +11,8 @@ namespace PlatformerMVC
         [SerializeField] private CameraView _cameraView;
         [SerializeField] private LoseView _loseView;
         [SerializeField] private MobileController _mobileController;
-
+        [SerializeField] private GameObject _sounds;
+        [SerializeField] private WinView _winView;
         [SerializeField] private YandexSDK SDK;
         public override void InstallBindings()
         {
@@ -26,6 +27,8 @@ namespace PlatformerMVC
 
             Container.Bind<YandexSDK>().FromInstance(SDK).AsCached();
             Container.Bind<MobileController>().FromInstance(_mobileController).AsCached();
+            Container.Bind<GameObject>().WithId("All_Sounds").FromInstance(_sounds).AsCached();
+            Container.Bind<WinController>().FromNew().AsCached().WithArguments(_winView, _playerView);
         }
     }
 }

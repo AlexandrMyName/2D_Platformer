@@ -21,10 +21,12 @@ namespace PlatformerMVC
 
         [Inject(Id = "LoseId")]
         private LoseController _loseController;
+
+        [Inject]
+        private WinController _winController;
+
+
        
-
-
-      
         private void Update(){
 
            _playerController?.Update();
@@ -39,6 +41,11 @@ namespace PlatformerMVC
 
         public void ReloadLevel(int level)
         {
+            SceneManager.LoadScene("Level_" + level.ToString());
+        }
+        public void ToNextLevel(int level)
+        {
+            Time.timeScale = 1.0f;
             SceneManager.LoadScene("Level_" + level.ToString());
         }
     }

@@ -9,6 +9,7 @@ TagManager:
   - TrollUpp
   - TrollPlatformDeath
   - OutWorld
+  - NextLevel
   layers:
   - Default
   - TransparentFX

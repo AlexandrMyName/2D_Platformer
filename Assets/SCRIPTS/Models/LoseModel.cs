@@ -13,7 +13,7 @@ namespace PlatformerMVC
         {
             int Checker_count = 0;
             int CurrentDeathForAdv = 0;
-            view._losePanel.SetActive(true);
+            view._panel.SetActive(true);
 
             #region Show Add block
             if (PlayerPrefs.HasKey("adv_deathCount")){
@@ -40,14 +40,14 @@ namespace PlatformerMVC
                 
                 PlayerPrefs.SetInt("death_count", Checker_count);
 
-                view._deathCount.text = "x " + Checker_count.ToString();
+                view._count.text = "x " + Checker_count.ToString();
                 return Checker_count;
             }
             else
             {
                 PlayerPrefs.SetInt("death_count", ++Checker_count);
 
-                view._deathCount.text = "x " + Checker_count.ToString();
+                view._count.text = "x " + Checker_count.ToString();
                 
                 return Checker_count;
 
