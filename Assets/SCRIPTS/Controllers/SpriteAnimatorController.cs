@@ -42,8 +42,6 @@ namespace PlatformerMVC
 
         private AnimationConfig _config;
         private Dictionary<SpriteRenderer, Animation> _activeAnimations = new Dictionary<SpriteRenderer, Animation>();
-
-
         public SpriteAnimatorController(AnimationConfig config) => _config = config;
         
 

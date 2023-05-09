@@ -10,6 +10,8 @@ TagManager:
   - TrollPlatformDeath
   - OutWorld
   - NextLevel
+  - Enemy_TrollPlatform
+  - Enemy_Death
   layers:
   - Default
   - TransparentFX

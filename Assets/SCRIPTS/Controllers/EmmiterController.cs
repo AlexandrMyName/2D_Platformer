@@ -16,21 +16,18 @@ namespace PlatformerMVC
         public EmmiterController(List<BulletView> bullets, Transform emmiterT)
         {
             _tr = emmiterT;
-            foreach(BulletView view in bullets)
-            {
+            foreach(BulletView view in bullets)          
                 _bulletControllers.Add(new BulletController(view));
-            }
+            
         }
         public void Update()
         {
-            if(_timeTillNextBullet > 0)
-            {
+            if(_timeTillNextBullet > 0){
                 _bulletControllers[_index].Active(false);
                 _timeTillNextBullet-= Time.deltaTime;
 
             }
-            else
-            {
+            else{
                 _timeTillNextBullet = _delay;
                 _bulletControllers[_index].TrowBullet(_tr.position, _tr.up * _startSpeed);
                 _index++;

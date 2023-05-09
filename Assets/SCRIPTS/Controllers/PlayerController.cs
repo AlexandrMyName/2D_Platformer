@@ -6,8 +6,6 @@ namespace PlatformerMVC
 {
     public class PlayerController
     {
-
-
         [Inject(Id = "Player_Configs")]
         private SpriteAnimatorController _playerAnimator;
 
@@ -40,16 +38,35 @@ namespace PlatformerMVC
 
 
         [Inject]
-        private MobileController _mobile;
+        private ButtonPooler _mobile;
+
+        [Inject]
+        public AudioController Audio { get; set; }
+
 
         private float health = 100f;
-        public PlayerController(InteractiveObjView playerView, ContactPooler _contactPooler)
-        {
+        public PlayerController(InteractiveObjView playerView, ContactPooler _contactPooler){
+
             _playerView = playerView;
             _rb = _playerView._rb;
             _poolContacts = _contactPooler;
             playerView.takeDamage += TakeDamage;
             _playerView._healthBar.maxValue = 100f;
+
+
+            if (PlayerPrefs.HasKey("Current_color"))
+            {
+                int color = PlayerPrefs.GetInt("Current_color");
+
+                switch (color){
+                    case 0: playerView._sprite.color = Color.red;
+                        break;
+                    case 1: playerView._sprite.color = Color.green;
+                        break;
+                    case 2: playerView._sprite.color = Color.blue;
+                        break;  
+                }    
+            }
         }
       
         private void TakeDamage(BulletView view)
@@ -62,7 +79,8 @@ namespace PlatformerMVC
             {
                 health = 0;
                 _playerView._healthBar.gameObject.SetActive(false);
-                _playerView._sprite.enabled = false;
+                _playerView._rb.AddForce(Vector2.up * 3, ForceMode2D.Impulse);
+                _playerView._collider2D.isTrigger = true;
             }
         }
         public void Update(){
@@ -95,6 +113,7 @@ namespace PlatformerMVC
 
                 if ((_isJump || Input.GetKeyDown(KeyCode.Space) || _mobile.IsUpInput)) //START Jump
                 {
+                    Audio.PlayJump();
                     _rb.velocity = new Vector2(_xVelocity, 0);
                     _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
                 }
@@ -103,26 +122,20 @@ namespace PlatformerMVC
             {
                 if (Mathf.Abs(_yVelocity) > _jumpTrashhold)
                     _playerAnimator.StartAnimation(_playerView._sprite, AnimationState.Jump, false, _animationSpeed);
-
-               
-                
             }
         }
 
 
         private void MoveTowards()
         {
-
             if (_mobile.IsLeftInput || _mobile.IsRightInput)
             {
-                if (_mobile.IsRightInput)
-                {
+                if (_mobile.IsRightInput){
                     _playerView._transform.localScale = _rightScale;
                    
                     _xVelocity = Time.fixedDeltaTime * _moveSpeed * 1;
                 }
-                else
-                {
+                else{
                     _playerView._transform.localScale = _leftScale;
                     
                     _xVelocity = Time.fixedDeltaTime * _moveSpeed * -1;
@@ -131,10 +144,8 @@ namespace PlatformerMVC
                 _rb.velocity = new Vector2(_xVelocity, _yVelocity);
 
                 return;
-
             }
-            else
-            {
+            else{
                 _xVelocity = Time.fixedDeltaTime * _moveSpeed * (_xInput < 0 ? -1 : 1);
                 _rb.velocity = new Vector2(_xVelocity, _yVelocity);
                 _playerView._transform.localScale = _xInput < 0 ? _leftScale : _rightScale;

@@ -11,6 +11,7 @@ namespace PlatformerMVC
         YandexSDK sdk;
         public int UpdateCount(LoseView view)
         {
+            Time.timeScale = 0;
             int Checker_count = 0;
             int CurrentDeathForAdv = 0;
             view._panel.SetActive(true);

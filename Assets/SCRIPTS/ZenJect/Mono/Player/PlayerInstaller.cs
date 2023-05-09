@@ -10,10 +10,13 @@ namespace PlatformerMVC
         [SerializeField] private CannonView _cannonView;
         [SerializeField] private CameraView _cameraView;
         [SerializeField] private LoseView _loseView;
-        [SerializeField] private MobileController _mobileController;
+        [SerializeField] private ButtonPooler _mobileController;
         [SerializeField] private GameObject _sounds;
         [SerializeField] private WinView _winView;
         [SerializeField] private YandexSDK SDK;
+
+        [SerializeField] private AudioView _audioView;
+        
         public override void InstallBindings()
         {
             var _confAnimathionPlayer = Resources.Load<AnimationConfig>("SpriteAnimatorCfg");
@@ -26,9 +29,11 @@ namespace PlatformerMVC
             Container.Bind<LoseController>().WithId("LoseId").FromNew().AsCached().WithArguments(_playerView,_loseView);
 
             Container.Bind<YandexSDK>().FromInstance(SDK).AsCached();
-            Container.Bind<MobileController>().FromInstance(_mobileController).AsCached();
+            Container.Bind<ButtonPooler>().FromInstance(_mobileController).AsCached();
             Container.Bind<GameObject>().WithId("All_Sounds").FromInstance(_sounds).AsCached();
             Container.Bind<WinController>().FromNew().AsCached().WithArguments(_winView, _playerView);
+            Container.Bind<AudioController>().FromNew().AsCached().WithArguments(_audioView._soundsYB, _audioView._fonAudioYB, _audioView._nameMusic);
+           
         }
     }
 }
