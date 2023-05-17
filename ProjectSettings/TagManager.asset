@@ -3,12 +3,24 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bullet
+  - TrollPlatform
+  - TrollUpp
+  - TrollPlatformDeath
+  - OutWorld
+  - NextLevel
+  - Enemy_TrollPlatform
+  - Enemy_Death
+  - ship
+  - asteroid
+  - Enemy
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - AI_Obstacle
   - Water
   - UI
   - 
@@ -40,4 +52,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Cannon
+    uniqueID: 1060164213
     locked: 0
