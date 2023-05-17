@@ -7,8 +7,7 @@ namespace PlatformerMVC
 {
     public class LoseModel
     {
-        [Inject(Id = "Yandex")]
-        YandexSDK sdk;
+        [Inject(Id = "Yandex")] private YandexSDK sdk;
         public int UpdateCount(LoseView view)
         {
             Time.timeScale = 0;
@@ -51,7 +50,6 @@ namespace PlatformerMVC
                 view._count.text = "x " + Checker_count.ToString();
                 
                 return Checker_count;
-
             }
         }
 

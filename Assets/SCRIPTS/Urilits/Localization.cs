@@ -10,8 +10,8 @@ namespace PlatformerMVC
     public class Localization : MonoBehaviour
     {
 
-        Localization languege;
-        YandexSDK yandex;
+        private Localization languege;
+        private YandexSDK yandex;
 
         [DllImport("__Internal")]
         private static extern string GetLang();
@@ -20,23 +20,30 @@ namespace PlatformerMVC
        
         public YandexSDK Yandex { get { return yandex; } set { yandex = value;  } }
 
-       
-
-
         void Start()
         {
+           
             if(languege == null  ){
 
                 languege = this;
                 DontDestroyOnLoad(gameObject);
 
-              #if !UNITY_EDITOR
+#if !UNITY_EDITOR
                 Lang = GetLang();
-              #else 
+#else 
                 Lang = "en";
-                         #endif
+#endif
                 this.gameObject.name = "-[Languege Pakage]-";
-                SceneManager.LoadScene("Level_1");
+
+                int maxLevel = 0;
+
+                    if (PlayerPrefs.HasKey("Levels")){
+
+                        maxLevel = PlayerPrefs.GetInt("Levels");
+                        SceneManager.LoadScene("Level_"+maxLevel.ToString());
+                    }
+                    else SceneManager.LoadScene("Level_1");
+                
             }
             else Destroy(gameObject);
         }

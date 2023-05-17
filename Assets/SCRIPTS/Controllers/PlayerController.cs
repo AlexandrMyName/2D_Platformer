@@ -45,6 +45,9 @@ namespace PlatformerMVC
 
 
         private float health = 100f;
+
+
+      
         public PlayerController(InteractiveObjView playerView, ContactPooler _contactPooler){
 
             _playerView = playerView;
@@ -53,19 +56,29 @@ namespace PlatformerMVC
             playerView.takeDamage += TakeDamage;
             _playerView._healthBar.maxValue = 100f;
 
+            CheckpointUtilit.Check(_playerView._transform);
 
+            CheckColor(playerView);
+        }
+
+        private void CheckColor(InteractiveObjView playerView)
+        {
             if (PlayerPrefs.HasKey("Current_color"))
             {
                 int color = PlayerPrefs.GetInt("Current_color");
 
-                switch (color){
-                    case 0: playerView._sprite.color = Color.red;
+                switch (color)
+                {
+                    case 0:
+                        playerView._sprite.color = Color.red;
                         break;
-                    case 1: playerView._sprite.color = Color.green;
+                    case 1:
+                        playerView._sprite.color = Color.green;
                         break;
-                    case 2: playerView._sprite.color = Color.blue;
-                        break;  
-                }    
+                    case 2:
+                        playerView._sprite.color = Color.blue;
+                        break;
+                }
             }
         }
       
@@ -78,6 +91,7 @@ namespace PlatformerMVC
             if (health <= 0)
             {
                 health = 0;
+                Audio.Death();
                 _playerView._healthBar.gameObject.SetActive(false);
                 _playerView._rb.AddForce(Vector2.up * 3, ForceMode2D.Impulse);
                 _playerView._collider2D.isTrigger = true;
@@ -98,9 +112,8 @@ namespace PlatformerMVC
             {
                 if((_poolContacts.IsLeftContact || _poolContacts.IsRightContact) && _poolContacts.IsGround)
                     _xVelocity = _xVelocity = Time.fixedDeltaTime * _moveSpeed * (_xInput < 0 ? -1 : 1);
-                else
+                         else  _xVelocity = 0;
 
-                _xVelocity = 0;
                 _rb.velocity = new Vector2(_xVelocity,_rb.velocity.y);
             }
             if (_poolContacts.IsGround){
@@ -131,13 +144,13 @@ namespace PlatformerMVC
             if (_mobile.IsLeftInput || _mobile.IsRightInput)
             {
                 if (_mobile.IsRightInput){
+
                     _playerView._transform.localScale = _rightScale;
-                   
                     _xVelocity = Time.fixedDeltaTime * _moveSpeed * 1;
                 }
                 else{
+
                     _playerView._transform.localScale = _leftScale;
-                    
                     _xVelocity = Time.fixedDeltaTime * _moveSpeed * -1;
                 }
 
@@ -151,6 +164,5 @@ namespace PlatformerMVC
                 _playerView._transform.localScale = _xInput < 0 ? _leftScale : _rightScale;
             }
         }
-      
     }
 }

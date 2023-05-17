@@ -72,7 +72,7 @@ namespace PlatformerMVC
 #if !UNITY_EDITOR
            
           
-          //  ShowAdd();
+         ShowAdd();
 
            
             

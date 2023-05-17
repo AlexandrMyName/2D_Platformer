@@ -9,9 +9,12 @@ namespace PlatformerMVC
     {
         public bool CheckLevel(int level)
         {
-                if (PlayerPrefs.HasKey("Levels"))
-                  if(  PlayerPrefs.GetInt("Levels") >= level)
+            if (PlayerPrefs.HasKey("Levels"))
+                if (PlayerPrefs.GetInt("Levels") >= level){
+
+                        CheckpointUtilit.Remove();
                         SceneManager.LoadScene("Level_" + level);
+                }
             return false;
         }
     }

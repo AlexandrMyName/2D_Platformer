@@ -14,6 +14,8 @@ namespace PlatformerMVC
         public WinModel(WinView view) => _view = view;
         public void ShowScore(float health)
         {
+
+            CheckpointUtilit.Remove();
             Time.timeScale = 0.0f;
             _view._panel.gameObject.SetActive(true);
             Transform _winScore = _view._panel.transform.GetChild(2).gameObject.transform;

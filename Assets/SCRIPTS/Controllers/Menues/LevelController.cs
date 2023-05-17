@@ -9,8 +9,7 @@ namespace PlatformerMVC
         private LevelView _levelView;
         private LevelModel _levelModel;
 
-        public LevelController(LevelView levelView)
-        {
+        public LevelController(LevelView levelView){
             _levelView = levelView;
             _levelModel = new LevelModel();
         }

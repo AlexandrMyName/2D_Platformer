@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 namespace PlatformerMVC
 {
@@ -13,13 +14,16 @@ namespace PlatformerMVC
         public Action death;
         public Action nextLevel;
 
+        [Inject]
+        public AudioController Audio { get; set; }
+
         public void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.tag == "OutWorld")
             {
                 death?.Invoke();
                 Debug.Log("Invoke");
-
+                Audio.Death();
             }
             if (collision.tag == "NextLevel")
             {
@@ -31,7 +35,14 @@ namespace PlatformerMVC
             {
                 GetComponent<Rigidbody2D>().AddForce(Vector2.up * 4, ForceMode2D.Impulse);
                 GetComponent<Collider2D>().isTrigger = true;
+                Audio.Death();
 
+            }
+            if (collision.gameObject.CompareTag("Checkpoint"))
+            {
+                CheckpointUtilit.Save(_transform);
+                collision.gameObject.SetActive(false);
+                Audio.PlayCheckpoint();
             }
         }
         private void OnCollisionEnter2D(Collision2D collision)
@@ -60,6 +71,7 @@ namespace PlatformerMVC
             {
                 collision.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
                 GetComponent<Collider2D>().isTrigger = true;
+                Audio.Death();
 
             }
             if (collision.gameObject.tag == "Enemy_TrollPlatform")
@@ -68,7 +80,15 @@ namespace PlatformerMVC
                 //GetComponent<Collider2D>().isTrigger = true;
 
             }
-           
+            if (collision.gameObject.tag == "Enemy")
+            {
+                GetComponent<Rigidbody2D>().AddForce(Vector2.up * 4, ForceMode2D.Impulse);
+                GetComponent<Collider2D>().isTrigger = true;
+                Audio.Death();
+                
+
+            }
+
         }
     }
 }

@@ -10,8 +10,5 @@ namespace PlatformerMVC
     {
         public GameObject _panel;
         public TextMeshProUGUI _error;
-
-
-
     }
 }

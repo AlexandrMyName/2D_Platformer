@@ -7,7 +7,5 @@ public class AudioView : MonoBehaviour
 
     public AudioYB _fonAudioYB;
     public AudioYB _soundsYB;
-
-
     public string _nameMusic;
 }
